@@ -69,7 +69,7 @@ assertSimpleTest는 파라미터로 들어오는 executable을 `SIMPLE_TEST_TIME
         );
     }
 ```
-> - `assertSimpleTest()` : 괄호 안에 있는 식이 1초 이내에 실행되는지 Test한다.
+- `assertSimpleTest()` : 괄호 안에 있는 식이 1초 이내에 실행되는지 Test한다.
 - `assertThatThrownBy()` : 해당 메서드는 괄호안에 위치한 람다식 안에서 발생하는 exception을 throw하는 메서드이다.
 - `runException("1234")` : 해당 메서드는 해당 parameter를 통해 main메서드를 시행시키고 exception을 잡아내는 함수이다. 위의 코드에서는 1234의 값을 넣고 실행하였을 때 try/catch문으로 exception을 잡아낸다.
 - `.isInstanceOf(IllegalArgumentException.class)` : 발생한 exception가 `IllegalArgumentException.class`인지 확인
