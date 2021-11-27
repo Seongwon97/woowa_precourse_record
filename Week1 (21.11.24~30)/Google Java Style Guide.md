@@ -563,7 +563,57 @@ somethingThatYieldsAFoo().aStaticMethod(); // very bad
 
 > Tip: Don't do it. If you absolutely must, first read and understand Effective Java Item 7, "Avoid Finalizers," very carefully, and then don't do it.
 
+<hr>
 
+# 7. JavaDoc
+## 7.1 Formatting
+### 7.1.1 일반적인 형식
+JavaDoc 블록의 일반적인 포메팅은 아래의 예제와 같다.
+```java
+/**
+ * Multiple lines of Javadoc text are written here,
+ * wrapped normally...
+ */
+public int method(String p1) { ... }
+```
+또는 아래의 단일 줄의 예시와 같다.
+```java
+/** An especially short bit of Javadoc. */
+```
+기본 형식은 항상 허용됩니다. comment marker와 함께 Javadoc블록 전체가 한 줄에 들어갈 수 있는 경우에는 위와 같이 한 줄로 사용 가능합니다. `@return`과 같은 블록 태그가 없는 경우에만 해당됩니다.
+
+### 7.1.2 단락 (Paragraphs)
+한 개의 빈 줄(정렬된 선행 별표(`*`)만 포함하는 행)은 단락 사이와 블록 태그의 그룹 앞에 표시됩니다. 첫 번째 단락을 제외한 각 단락은 첫 번째 단어 바로 앞에 `<p>`가 있고 뒤에 공백이 없습니다.
+
+### 7.1.3 블록 태그
+사용되는 표준 "블록 태그"는 `@param`, `@return`, `@throws`, `@deprecated` 순서로 표시되며 이 네 가지 유형은 빈 서술이 있으면 안됩니다. 블록 태그가 한 줄에 맞지 않으면 `@` 위치에서 들여쓰기 4번을 합니다.
+
+## 7.2 요약 조각(fragment)
+각각의 JavaDoc블록은 간단한 summary fargment로 시작한다. 이 frament는 매우 중요하다. 이것은 클래스 및 메서드 인덱스와 같은 특정 컨텍스트에 나타나는 텍스트의 유일한 부분입니다.
+
+fragment는 완전한 문장이 아닌 명사구나 동사구입니다. 이것은 `A {@code Foo} is a...`나 `This method returns...`로 시작하지 않고 `Save the record.`와 같은 완전한 명령형으로 작성되지도 않습니다. 하지만 fragment는 완전한 문장인 것처럼 대문자와 구두점이 있습니다.
+
+> 팁: 일반적인 실수는 `/** @return the customer ID */`형식으로 간단한 JavaDoc을 작성하는 것입니다. 이것은 올바르지 않으며 `/** Returns the customer ID. */`으로 변경되어야 합니다.
+
+## 7.3 Javadoc이 어디서 쓰이는지
+최소한 JavaDoc은 모든 `public`클래스와 `public`, `protected`멤버에 쓰입니다. 
+몇몇의 예외는 아래와 같습니다. 
+
+### 7.3.1 예외: 자가-설명 메서드
+Javadoc은 `getFoo`와 같이 "간단하고 명백한" 메서드에 대해 선택사항입니다.
+ 이 경우 "foo를 반환한다"는 말 밖에 할 말이 없습니다.
+ 
+ > 중요! : 일반적인 독자가 알아야 할 관련 정보를 생략하는 것을 정당화하기 위해 이 예외를 인용하는 것은 적절하지 않습니다. 예를 들어, `getCanonicalName`이라는 메서드의 경우 일반적인 독자가 "canonical name"이라는 용어가 무엇인지 모를 수 있어 해당 문서를 생략하면 안됩니다.
+
+### 7.3.2 예외: overrides
+Javadoc은 supertype메서드를 override하는데 항상 존재하지 않습니다.
+
+### 7.3.4 Javadoc이 필요없는 이유
+다른 클래스와 멤버들은 Javadoc을 필요에 따라 원하는 대로 갖는다.
+
+구현 주석이 클래스나 멤버의 전반적인 목적이나 동작을 정의하는 데 사용될 때마다 해당 주석은 대신 Javadoc으로 작성됩니다(`/**`사용).
+
+필수가 아닌 Javadoc은 섹션 7.1.2, 7.1.3 및 7.2의 형식 지정 규칙을 따르도록 엄격하게 요구되지는 않지만 물론 권장됩니다.
 
 <hr>
 
