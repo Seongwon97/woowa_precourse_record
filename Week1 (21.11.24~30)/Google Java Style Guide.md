@@ -108,7 +108,7 @@ static import는 static중첩 클래스에 사용되지 않는다. 그것들은 
 
 <hr>
 
-# Formatting
+# 4. Formatting
 용어 정리: block-like construct(블록과 유사한 구성?구조?)는 클래스, 메서드, 생성자의 본문(body)를 나타냅니다. 
 섹션 4.8.3.1인 Array initializer에 따르면 모든 Array initializer는 선택적으로 block-like construct처럼 처리될 수 있습니다.
 
@@ -414,7 +414,109 @@ long의 값을 가지는 정수 리터럴은 대문자 L의 접미사를 가집�
 소문자를 사용하는 경우 1과 헷갈릴 수 있어서 대문자를 사용합니다.
 예를 들면 3000000000l 대신 3000000000L을 사용합니다.
 
+<hr>
 
+# Naming
+## 5.1 모든 식별자에 대한 공통 규칙
+식별자는 반드시 ASCII문자와 숫자를 사용해야합니다. 그리고 가끔은 userscore(`_`)를 이용하기도 합니다. 그러므로 유효한 식별자의 이름은 정규식 `\w+`와 매칭됩니다.
+
+구글 스타일에 따르면 특수한 접미사 또는 접두사는 사용하지 않습니다. 
+예를 들면 `name_`, `mName`, `s_name`, `kName`와 같은 식별자는 사용하지 않습니다.
+
+## 5.2 식별자 타입에 대한 규칙
+### 5.2.1 패키지 이름
+패키지 이름은 모두 소문자로 작성하며 긴 단어의 경우 단순히 연결하여 작성합니다.(언더바도 사용 금지)
+- com.example.deepspace (O)
+- com.example.deepSpace (X)
+- com.example.deep_space (X)
+
+### 5.2.2 클래스 이름
+클래스의 이름은 **UpperCamelCase**로 작성합니다.
+
+클래스의 이름은 일반적으로 명사나 명사구입니다. 예를 들면 `Character`또는 `ImmutableList`를 사용합니다.
+인터페이스의 이름 또한 명사나 명사구를 사용합니다. 하지만 가끔씩 형용사나 형용사구가 사용되기도 합니다.(ex. `Readable` ) 
+
+어노테이션은 따로 잘 만들어진 규칙이 없습니다.
+
+테스트 클래스들은 테스트 하고자하는 클래스의 이름이 앞에 오고 `Test`를 붙여줍니다. 
+예를 들면 `HashTest`, `HashIntegrationTest`와 같이 정합니다.
+
+### 5.2.3 메서드 이름
+메서드의 이름도 **UpperCamelCase**로 작성합니다.
+
+메서드의 이름은 일반적으로 동사나 동사구를 사용합니다. 예를 들면 `sendMessage` 또는 `stop`이 있습니다.
+
+Underscore(`_`)는 JUnit테스트에서 논리적 컴포넌트를 분리시키기 위해 각각의 lowerCamelCase로 변경시켜 나올 수 있습니다. 
+하나의 전형적인 패턴은 `<methodUnderTest>_<state>` 입니다. 예를 들면 `pop_emptyStack`와 같이 합니다. 테스트 메서드 이름엔 정답이 없습니다.
+
+### 5.2.4 상수 이름
+상수의 이름은 CONSTANT_CASE를 사용합니다. CONSTANT_CASE는 모두 대문자이며 각각의 단어는 언더스코어(`_`)로 구분합니다. 하지만 상수가 정확히 무엇일까요?
+
+상수는 변경될 수 없고 그것들의 메서드에서 부작용이 보여서는 안되는 `static final` 필드를 의미합니다. 이것은 primitive, String, 불변타입 그리고 불변 컬렉션을 포함합니다. 만약 어떠한 인스턴스의 상태가 바뀐다면 그것은 상수가 아닙니다. 
+
+```java
+// Constants
+static final int NUMBER = 5;
+static final ImmutableList<String> NAMES = ImmutableList.of("Ed", "Ann");
+static final ImmutableMap<String, Integer> AGES = ImmutableMap.of("Ed", 35, "Ann", 32);
+static final Joiner COMMA_JOINER = Joiner.on(','); // because Joiner is immutable
+static final SomeMutableType[] EMPTY_ARRAY = {};
+enum SomeEnum { ENUM_CONSTANT }
+
+// Not constants
+static String nonFinal = "non-final";
+final String nonStatic = "non-static";
+static final Set<String> mutableCollection = new HashSet<String>();
+static final ImmutableSet<SomeMutableType> mutableElements = ImmutableSet.of(mutable);
+static final ImmutableMap<String, SomeMutableType> mutableValues =
+    ImmutableMap.of("Ed", mutableInstance, "Ann", mutableInstance2);
+static final Logger logger = Logger.getLogger(MyClass.getName());
+static final String[] nonEmptyArray = {"these", "can", "change"};
+```
+이것들의 이름은 일반적으로 명사나 명사구를 사용합니다.
+
+### 5.2.5 상수가 아닌 필드의 이름
+상수가 아닌 필드의 이름은 **lowerCamelCase**를 사용합니다.
+
+이름은 전형적으로 명사나 명사구를 이용합니다. 
+ex) `computedValues`, `index` 
+
+### 5.2.6 파라미터의 이름
+파라미터의 이름은 **lowerCamelCase**를 사용합니다.
+
+public 메서드에서 하나의 문자를 사용한 파라미터의 이름은 피해야합니다.
+
+### 5.2.7 지역 변수의 이름
+지역 변수의 이름은 **lowerCamelCase**를 사용합니다.
+
+심지어 `final`이나 불변, 지역 변수는 상수로 간주되어서는 안되고 상수 스타일로 기술해서도 안됩니다.
+
+### 5.2.8 타입 변수의 이름
+각각의 변수 타입은 아래의 두가지 스타일을 따릅니다.
+
+- 하나의 대문자, 선택적으로 뒤에 하나의 숫자가 따라올 수 있다.
+ex) `E`, `T`, `X`, `T2`
+- 클래스를 위해서 사용되는 이름의 형식에 `T`대문자가 따라오는 형식
+ex) `RequestT`, `FooBarT`
+
+## 5.3 Camel case: defined
+때때로 영어 구문을 카멜 케이스로 바꾸는 이유가 하나 이상 존재한다. 예를 들어, "IPv6" 또는 "iOS"와 같은 특이한 구조나 두문자어가 있을 때처럼 말이다. 예측 가능성을 높이기 위해 Google Style은 다음과 같은 결정론적 체계를 지정합니다.
+
+이름을 산문 형태로 시작한다:
+1. 구를 평문의 ASCII로 변경하고 어퍼스트로피(`'`)를 없앤다. 예를 들면 "Müller's algorithm"를 "Muellers algorithm"로 변경한다.
+2. 결과를 단어로 나누고 남은 공백과 구두점으로 나눈다. (일반적으로 하이픈(`-`)으로 나눈다)
+   - 추천 : 어떤 단어가 이미 카멜 케이스 방식이 쓰인다면 이것을 구성하는 부분들로 나눈다. (ex. "AdWords" -> "ad words")
+   ※ iOS는 카멜 케이스가 아니다. 이 부분은 어떠한 약속에도 위배됨으로 적용하지 않는다.
+3. 이제 모두 lowercase로 바꾸고 그리고 첫번째 글자를 대문자로 바꿔줍니다.
+   - 각각의 단어는 Upper camel case를 적용한다.
+   - 첫번째로 오는 단어는 lower camel case를 적용한다.
+4. 마침내 단어들을 하나의 식별자로 합칩니다.
+
+![](https://images.velog.io/images/seongwon97/post/54ae9849-51c5-4e21-9660-0dbc76a02d8e/image.png)
+
+*은 사용가능하나 권장되지 않는다.
+
+> 노트: 일부 단어들은 영어에서 모호하게 하이픈(`-`)으로 연결된다. 예를 들어 "nonempty"와 "non-empty"가 모두 올바르므로 메서드 이름 checkNonempty와 checkNonempty도 모두 정확합니다.
 
 <hr>
 
