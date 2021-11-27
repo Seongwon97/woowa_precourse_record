@@ -618,6 +618,6 @@ Javadoc은 supertype메서드를 override하는데 항상 존재하지 않습니
 <hr>
 
 # Reference
-https://google.github.io/styleguide/javaguide.html#s4.8.1-enum-classes
-https://github.com/JunHoPark93/google-java-styleguide
-https://github.com/binghe819/TIL/blob/master/JAVA/%EA%B8%B0%ED%83%80/google%20java%20style%20guide.md
+- https://google.github.io/styleguide/javaguide.html#s4.8.1-enum-classes
+- https://github.com/JunHoPark93/google-java-styleguide
+- https://github.com/binghe819/TIL/blob/master/JAVA/%EA%B8%B0%ED%83%80/google%20java%20style%20guide.md
